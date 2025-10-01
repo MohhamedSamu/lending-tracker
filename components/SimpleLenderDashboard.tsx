@@ -95,90 +95,90 @@ const SimpleLenderDashboard: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Bienvenida */}
-      <div className="text-center py-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-3">
+      <div className="text-center py-4 sm:py-8 px-2">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
           Bienvenido
         </h1>
-        <p className="text-2xl text-gray-600">
+        <p className="text-base sm:text-xl md:text-2xl text-gray-600 px-2">
           Estado de tus préstamos al {format(new Date(), 'dd MMMM yyyy', { locale: es })}
         </p>
       </div>
 
       {/* Préstamos Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
         {borrowersData.map((borrowerData) => (
           <Card key={borrowerData.user.id} className="border-2 border-gray-300 shadow-lg">
-            <div className="p-8 space-y-6">
+            <div className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
               {/* Nombre del Prestatario */}
-              <div className="text-center pb-4 border-b-2 border-gray-200">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              <div className="text-center pb-3 sm:pb-4 border-b-2 border-gray-200">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 break-words">
                   {borrowerData.user.name}
                 </h2>
-                <p className="text-xl text-gray-600">{borrowerData.user.email}</p>
+                <p className="text-sm sm:text-base md:text-xl text-gray-600 break-all">{borrowerData.user.email}</p>
               </div>
 
               {/* Monto Prestado */}
-              <div className="bg-blue-50 rounded-xl p-6 text-center">
-                <p className="text-xl font-medium text-blue-700 mb-2">
+              <div className="bg-blue-50 rounded-xl p-4 sm:p-6 text-center">
+                <p className="text-base sm:text-lg md:text-xl font-medium text-blue-700 mb-1 sm:mb-2">
                   Monto Prestado
                 </p>
-                <p className="text-4xl font-bold text-blue-900">
+                <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900 break-words">
                   {formatCurrency(borrowerData.user.loan_amount || 0)}
                 </p>
               </div>
 
               {/* Monto Pagado */}
-              <div className="bg-green-50 rounded-xl p-6 text-center">
-                <p className="text-xl font-medium text-green-700 mb-2">
+              <div className="bg-green-50 rounded-xl p-4 sm:p-6 text-center">
+                <p className="text-base sm:text-lg md:text-xl font-medium text-green-700 mb-1 sm:mb-2">
                   Ya ha pagado
                 </p>
-                <p className="text-4xl font-bold text-green-900">
+                <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-900 break-words">
                   {formatCurrency(borrowerData.stats.totalPaid)}
                 </p>
-                <p className="text-lg text-green-600 mt-2">
+                <p className="text-sm sm:text-base md:text-lg text-green-600 mt-1 sm:mt-2">
                   {borrowerData.stats.totalPayments} pagos realizados
                 </p>
               </div>
 
               {/* Progreso */}
-              <div className="bg-purple-50 rounded-xl p-6">
-                <p className="text-xl font-medium text-purple-700 mb-3 text-center">
+              <div className="bg-purple-50 rounded-xl p-4 sm:p-6">
+                <p className="text-base sm:text-lg md:text-xl font-medium text-purple-700 mb-2 sm:mb-3 text-center">
                   Progreso Completado
                 </p>
                 <div className="relative">
-                  <div className="w-full h-8 bg-purple-200 rounded-full overflow-hidden">
+                  <div className="w-full h-6 sm:h-8 bg-purple-200 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-purple-600 transition-all duration-500"
                       style={{ width: `${Math.min(100, borrowerData.stats.progressPercentage)}%` }}
                     ></div>
                   </div>
-                  <p className="text-center text-4xl font-bold text-purple-900 mt-3">
+                  <p className="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-purple-900 mt-2 sm:mt-3">
                     {formatPercentage(borrowerData.stats.progressPercentage)}
                   </p>
                 </div>
               </div>
 
               {/* Tiempo Restante */}
-              <div className="bg-orange-50 rounded-xl p-6 text-center">
-                <p className="text-xl font-medium text-orange-700 mb-2">
+              <div className="bg-orange-50 rounded-xl p-4 sm:p-6 text-center">
+                <p className="text-base sm:text-lg md:text-xl font-medium text-orange-700 mb-1 sm:mb-2">
                   Tiempo Estimado Restante
                 </p>
-                <p className="text-3xl font-bold text-orange-900">
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-orange-900 break-words">
                   {calculateTimeRemaining(borrowerData.stats.minimumPaymentsRemaining)}
                 </p>
-                <p className="text-lg text-orange-600 mt-2">
+                <p className="text-sm sm:text-base md:text-lg text-orange-600 mt-1 sm:mt-2">
                   {borrowerData.stats.minimumPaymentsRemaining} pagos mínimos restantes
                 </p>
               </div>
 
               {/* Estado */}
-              <div className={`rounded-xl p-6 text-center ${
+              <div className={`rounded-xl p-4 sm:p-6 text-center ${
                 borrowerData.stats.paymentStatus === 'en_mora' ? 'bg-red-50' :
                 borrowerData.stats.paymentStatus === 'pendiente' ? 'bg-yellow-50' :
                 borrowerData.stats.paymentStatus === 'adelantado' ? 'bg-green-50' :
                 'bg-blue-50'
               }`}>
-                <p className="text-xl font-medium mb-2" style={{
+                <p className="text-base sm:text-lg md:text-xl font-medium mb-1 sm:mb-2" style={{
                   color: borrowerData.stats.paymentStatus === 'en_mora' ? '#991b1b' :
                          borrowerData.stats.paymentStatus === 'pendiente' ? '#92400e' :
                          borrowerData.stats.paymentStatus === 'adelantado' ? '#166534' :
@@ -186,7 +186,7 @@ const SimpleLenderDashboard: React.FC = () => {
                 }}>
                   Estado Actual
                 </p>
-                <p className="text-3xl font-bold" style={{
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold break-words" style={{
                   color: borrowerData.stats.paymentStatus === 'en_mora' ? '#991b1b' :
                          borrowerData.stats.paymentStatus === 'pendiente' ? '#92400e' :
                          borrowerData.stats.paymentStatus === 'adelantado' ? '#166534' :
@@ -202,9 +202,10 @@ const SimpleLenderDashboard: React.FC = () => {
               {/* Botón Ver Pagos */}
               <Button
                 onClick={() => window.location.href = `/lender/payments/${borrowerData.user.id}`}
-                className="w-full h-16 text-xl font-semibold flex items-center justify-center space-x-3"
+                className="w-full h-12 sm:h-14 md:h-16 text-base sm:text-lg md:text-xl font-semibold flex items-center justify-center space-x-2 sm:space-x-3"
               >
-                <Eye size={24} />
+                <Eye size={20} className="sm:hidden" />
+                <Eye size={24} className="hidden sm:block" />
                 <span>Ver Todos los Pagos</span>
               </Button>
             </div>
