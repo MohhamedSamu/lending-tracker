@@ -21,6 +21,7 @@ export class AuthService {
         .from('users')
         .select('*')
         .eq('email', credentials.email)
+        .returns<User>()
         .single()
 
       if (error || !user) {
@@ -51,6 +52,7 @@ export class AuthService {
         .from('users')
         .select('password_hash')
         .eq('id', userId)
+        .returns<{ password_hash: string }>()
         .single()
 
       if (error || !user) {
@@ -87,9 +89,10 @@ export class AuthService {
         .from('users')
         .select('*')
         .eq('id', userId)
+        .returns<User>()
         .single()
 
-      return error ? null : user
+      return error || !user ? null : user
     } catch (error) {
       console.error('Get user error:', error)
       return null
