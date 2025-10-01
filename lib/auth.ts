@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { supabase } from './supabase'
-import { User } from './database.types'
+import { User, Database } from './database.types'
 
 export interface LoginCredentials {
   email: string
@@ -17,17 +17,17 @@ export interface AuthUser {
 export class AuthService {
   static async login(credentials: LoginCredentials): Promise<AuthUser | null> {
     try {
-      const { data: user, error } = await supabase
+      const { data, error } = await supabase
         .from('users')
         .select('*')
         .eq('email', credentials.email)
-        .returns<User>()
         .single()
 
-      if (error || !user) {
+      if (error || !data) {
         return null
       }
 
+      const user = data as User
       const isValidPassword = await bcrypt.compare(credentials.password, user.password_hash)
       
       if (!isValidPassword) {
@@ -48,17 +48,17 @@ export class AuthService {
 
   static async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<boolean> {
     try {
-      const { data: user, error } = await supabase
+      const { data, error } = await supabase
         .from('users')
         .select('password_hash')
         .eq('id', userId)
-        .returns<{ password_hash: string }>()
         .single()
 
-      if (error || !user) {
+      if (error || !data) {
         return false
       }
 
+      const user = data as { password_hash: string }
       const isValidPassword = await bcrypt.compare(currentPassword, user.password_hash)
       
       if (!isValidPassword) {
@@ -68,12 +68,14 @@ export class AuthService {
       const saltRounds = 12
       const newPasswordHash = await bcrypt.hash(newPassword, saltRounds)
 
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({ 
-          password_hash: newPasswordHash,
-          updated_at: new Date().toISOString()
-        })
+      const updates: Database['public']['Tables']['users']['Update'] = {
+        password_hash: newPasswordHash,
+        updated_at: new Date().toISOString()
+      }
+
+      const { error: updateError } = await (supabase
+        .from('users') as any)
+        .update(updates)
         .eq('id', userId)
 
       return !updateError
@@ -85,14 +87,17 @@ export class AuthService {
 
   static async getUserById(userId: string): Promise<User | null> {
     try {
-      const { data: user, error } = await supabase
+      const { data, error } = await supabase
         .from('users')
         .select('*')
         .eq('id', userId)
-        .returns<User>()
         .single()
 
-      return error || !user ? null : user
+      if (error || !data) {
+        return null
+      }
+
+      return data as User
     } catch (error) {
       console.error('Get user error:', error)
       return null

@@ -42,8 +42,8 @@ export class PaymentService {
 
   static async addPayment(payment: NewPayment): Promise<Payment | null> {
     try {
-      const { data, error } = await supabase
-        .from('payments')
+      const { data, error } = await (supabase
+        .from('payments') as any)
         .insert(payment)
         .select()
         .single()
@@ -57,8 +57,8 @@ export class PaymentService {
 
   static async updatePayment(paymentId: string, updates: Partial<Payment>): Promise<boolean> {
     try {
-      const { error } = await supabase
-        .from('payments')
+      const { error } = await (supabase
+        .from('payments') as any)
         .update({
           ...updates,
           updated_at: new Date().toISOString()

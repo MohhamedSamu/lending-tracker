@@ -50,18 +50,19 @@ const LenderPaymentsPage: React.FC = () => {
   const loadBorrowerData = async () => {
     try {
       // Get borrower info
-      const { data: borrowerData, error: borrowerError } = await supabase
+      const { data, error: borrowerError } = await supabase
         .from('users')
         .select('*')
         .eq('id', userId)
         .single()
 
-      if (borrowerError || !borrowerData) {
+      if (borrowerError || !data) {
         toast.error('Prestatario no encontrado')
         router.push('/dashboard')
         return
       }
 
+      const borrowerData = data as User
       setBorrower(borrowerData)
 
       // Get payments

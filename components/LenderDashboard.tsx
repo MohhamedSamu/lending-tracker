@@ -26,13 +26,14 @@ const LenderDashboard: React.FC = () => {
   const loadBorrowersData = async () => {
     try {
       // Get all borrowers
-      const { data: borrowers, error: borrowersError } = await supabase
+      const { data, error: borrowersError } = await supabase
         .from('users')
         .select('*')
         .eq('role', 'borrower')
-        .returns<User[]>()
 
-      if (borrowersError || !borrowers) throw borrowersError
+      if (borrowersError || !data) throw borrowersError
+
+      const borrowers = data as User[]
 
       // Get payments for each borrower and calculate stats
       const borrowersWithData = await Promise.all(
