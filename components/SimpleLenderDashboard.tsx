@@ -31,8 +31,9 @@ const SimpleLenderDashboard: React.FC = () => {
         .from('users')
         .select('*')
         .eq('role', 'borrower')
+        .returns<User[]>()
 
-      if (borrowersError) throw borrowersError
+      if (borrowersError || !borrowers) throw borrowersError
 
       // Get payments for each borrower and calculate stats
       const borrowersWithData = await Promise.all(

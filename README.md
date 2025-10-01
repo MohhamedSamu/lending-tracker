@@ -113,9 +113,9 @@ La aplicación estará disponible en \`http://localhost:3000\`
 
 ## 👥 Usuarios de Demostración
 
-- **Prestamista**: prestamista@email.com
-- **Prestatario 1**: prestatario1@email.com  
-- **Prestatario 2**: prestatario2@email.com
+- **Prestamista**: prestamista@gmail.com (Samuel Calderon)
+- **Prestatario 1**: sfernandocalderon@gmail.com (Samuel Calderon - $40,500 / 15 años)
+- **Prestatario 2**: abax07@gmail.com (Ingrid Calderon - $37,500 / 10.5 años)
 
 **Contraseña inicial para todos**: \`password123\`
 
