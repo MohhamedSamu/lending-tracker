@@ -7,12 +7,13 @@ import { PaymentService } from '@/lib/payments'
 import { Payment } from '@/lib/database.types'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { Plus, Eye, Search, Filter } from 'lucide-react'
+import { Plus, Eye, Search, Filter, Upload } from 'lucide-react'
 import Layout from '@/components/Layout'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import AddPaymentModal from '@/components/AddPaymentModal'
+import AddVoucherModal from '@/components/AddVoucherModal'
 import ViewVoucherModal from '@/components/ViewVoucherModal'
 import MoraMonthsCard from '@/components/MoraMonthsCard'
 import toast from 'react-hot-toast'
@@ -25,6 +26,8 @@ const PaymentsPage: React.FC = () => {
   const [loadingPayments, setLoadingPayments] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
   const [selectedVoucher, setSelectedVoucher] = useState<string | null>(null)
+  const [showAddVoucherModal, setShowAddVoucherModal] = useState(false)
+  const [selectedPaymentForVoucher, setSelectedPaymentForVoucher] = useState<Payment | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [dateFilter, setDateFilter] = useState('')
 
@@ -235,7 +238,18 @@ const PaymentsPage: React.FC = () => {
                             <span>Ver</span>
                           </Button>
                         ) : (
-                          <span className="text-gray-400">Sin voucher</span>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedPaymentForVoucher(payment)
+                              setShowAddVoucherModal(true)
+                            }}
+                            className="flex items-center space-x-1"
+                          >
+                            <Upload size={14} />
+                            <span>Agregar</span>
+                          </Button>
                         )}
                       </td>
                     </tr>
@@ -265,6 +279,22 @@ const PaymentsPage: React.FC = () => {
           isOpen={!!selectedVoucher}
           onClose={() => setSelectedVoucher(null)}
           voucherUrl={selectedVoucher}
+        />
+      )}
+
+      {/* Add Voucher Modal */}
+      {showAddVoucherModal && selectedPaymentForVoucher && (
+        <AddVoucherModal
+          isOpen={showAddVoucherModal}
+          onClose={() => {
+            setShowAddVoucherModal(false)
+            setSelectedPaymentForVoucher(null)
+          }}
+          onSuccess={() => {
+            loadPayments()
+          }}
+          paymentId={selectedPaymentForVoucher.id}
+          userId={selectedPaymentForVoucher.user_id}
         />
       )}
     </Layout>
