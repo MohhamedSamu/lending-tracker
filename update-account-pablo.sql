@@ -14,3 +14,4 @@ SELECT id, email, name, role, loan_amount, monthly_payment, loan_start_date, loa
 FROM users
 WHERE email = 'paolomhf@gmail.com';
 
+

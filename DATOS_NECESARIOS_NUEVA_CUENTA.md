@@ -41,3 +41,5 @@ VALUES (
 
 **Una vez tengas todos estos datos, compártelos y crearemos el script SQL completo para insertar la nueva cuenta.**
 
+
+

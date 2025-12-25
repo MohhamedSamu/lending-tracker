@@ -103,9 +103,9 @@ const LoginForm: React.FC = () => {
               Cuentas de demostración
             </h3>
             <div className="text-xs text-blue-700 space-y-1">
-              <p><strong>Prestamista:</strong> prestamista@gmail.com</p>
-              <p><strong>Samuel Calderon:</strong> sfernandocalderon@gmail.com</p>
-              <p><strong>Ingrid Calderon:</strong> abax07@gmail.com</p>
+              <p><strong>Samuel Calderon:</strong> Samuelcalderon2003@yahoo.com</p>
+              <p><strong>Fernando Calderon:</strong> sfernandocalderon@gmail.com</p>
+              <p><strong>Pablo Hernandez:</strong> paolomhf@gmail.com</p>
               <p className="mt-2 italic">Contraseña inicial para todos: password123</p>
             </div>
           </div>
